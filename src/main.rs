@@ -6,7 +6,7 @@ mod commands;
 use gleap::client::GleapClient;
 use gleap::error::AppError;
 
-use cli::{Cli, Domain, MessagesAction, TicketsAction};
+use cli::{Cli, Domain, LogsAction, MessagesAction, TicketsAction};
 
 #[tokio::main]
 async fn main() {
@@ -56,15 +56,17 @@ async fn run() -> Result<(), AppError> {
                 priority,
                 title,
             } => commands::tickets::update::run(&client, &id, status, priority, title).await,
-            TicketsAction::ConsoleLogs { id } => {
-                commands::tickets::console_logs::run(&client, &id).await
-            }
-            TicketsAction::NetworkLogs { id } => {
-                commands::tickets::network_logs::run(&client, &id).await
-            }
-            TicketsAction::ActivityLogs { id } => {
-                commands::tickets::activity_logs::run(&client, &id).await
-            }
+            TicketsAction::Logs { action } => match action {
+                LogsAction::Console { id } => {
+                    commands::tickets::console_logs::run(&client, &id).await
+                }
+                LogsAction::Network { id } => {
+                    commands::tickets::network_logs::run(&client, &id).await
+                }
+                LogsAction::Activity { id } => {
+                    commands::tickets::activity_logs::run(&client, &id).await
+                }
+            },
         },
         Domain::Messages { action } => match action {
             MessagesAction::List {

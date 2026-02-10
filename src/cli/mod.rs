@@ -5,7 +5,7 @@ pub mod tickets;
 use clap::{Parser, Subcommand};
 
 pub use messages::MessagesAction;
-pub use tickets::TicketsAction;
+pub use tickets::{LogsAction, TicketsAction};
 
 #[derive(Parser, Debug)]
 #[command(

@@ -59,20 +59,29 @@ pub enum TicketsAction {
         title: Option<String>,
     },
 
-    /// Get console logs for a ticket
-    ConsoleLogs {
+    /// View logs captured with a ticket
+    Logs {
+        #[command(subcommand)]
+        action: LogsAction,
+    },
+}
+
+#[derive(Subcommand, Debug)]
+pub enum LogsAction {
+    /// Get JavaScript console output
+    Console {
         /// Ticket ID
         id: String,
     },
 
-    /// Get network logs for a ticket
-    NetworkLogs {
+    /// Get HTTP request/response data
+    Network {
         /// Ticket ID
         id: String,
     },
 
-    /// Get activity logs for a ticket
-    ActivityLogs {
+    /// Get ticket history (status changes, assignments, etc.)
+    Activity {
         /// Ticket ID
         id: String,
     },

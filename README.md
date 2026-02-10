@@ -163,17 +163,17 @@ gleap tickets update abc123 --status DONE
 gleap tickets update abc123 --priority HIGH
 ```
 
-#### Get ticket logs
+#### View ticket logs
 
 ```bash
 # Console logs (JavaScript errors, console output)
-gleap tickets console-logs <ID>
+gleap tickets logs console <ID>
 
 # Network logs (HTTP requests/responses)
-gleap tickets network-logs <ID>
+gleap tickets logs network <ID>
 
 # Activity logs (ticket history)
-gleap tickets activity-logs <ID>
+gleap tickets logs activity <ID>
 ```
 
 ### Messages
@@ -225,7 +225,7 @@ This CLI currently covers a subset of the Gleap API, focused on ticket managemen
 
 | Resource | Operations |
 |----------|-----------|
-| **Tickets** | list, get, search, update, console-logs, network-logs, activity-logs |
+| **Tickets** | list, get, search, update, logs (console, network, activity) |
 | **Messages** | list, note (internal), reply (comment) |
 
 The Gleap API has many more endpoints (help center, engagements, surveys, statistics, sessions, etc.) that are not yet implemented. Contributions welcome.
