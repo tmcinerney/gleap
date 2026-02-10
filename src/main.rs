@@ -1,0 +1,92 @@
+use clap::Parser;
+
+mod cli;
+mod commands;
+
+use gleap::client::GleapClient;
+use gleap::error::AppError;
+
+use cli::{Cli, Domain, MessagesAction, TicketsAction};
+
+#[tokio::main]
+async fn main() {
+    if let Err(e) = run().await {
+        eprintln!("Error: {}", e);
+        std::process::exit(e.exit_code());
+    }
+}
+
+async fn run() -> Result<(), AppError> {
+    let cli = Cli::parse();
+    let client = GleapClient::from_env()?;
+
+    match cli.domain {
+        Domain::Tickets { action } => match action {
+            TicketsAction::List {
+                status,
+                ticket_type,
+                priority,
+                sort,
+                pagination,
+            } => {
+                commands::tickets::list::run(
+                    &client,
+                    status,
+                    ticket_type,
+                    priority,
+                    sort,
+                    pagination.limit,
+                    pagination.skip,
+                )
+                .await
+            }
+            TicketsAction::Get { id } => commands::tickets::get::run(&client, &id).await,
+            TicketsAction::Search { query, pagination } => {
+                commands::tickets::search::run(
+                    &client,
+                    &query,
+                    pagination.limit,
+                    pagination.skip,
+                )
+                .await
+            }
+            TicketsAction::Update {
+                id,
+                status,
+                priority,
+                title,
+            } => commands::tickets::update::run(&client, &id, status, priority, title).await,
+            TicketsAction::ConsoleLogs { id } => {
+                commands::tickets::console_logs::run(&client, &id).await
+            }
+            TicketsAction::NetworkLogs { id } => {
+                commands::tickets::network_logs::run(&client, &id).await
+            }
+            TicketsAction::ActivityLogs { id } => {
+                commands::tickets::activity_logs::run(&client, &id).await
+            }
+        },
+        Domain::Messages { action } => match action {
+            MessagesAction::List {
+                ticket,
+                sort,
+                pagination,
+            } => {
+                commands::messages::list::run(
+                    &client,
+                    &ticket,
+                    sort,
+                    pagination.limit,
+                    pagination.skip,
+                )
+                .await
+            }
+            MessagesAction::Note { ticket, text } => {
+                commands::messages::note::run(&client, &ticket, &text).await
+            }
+            MessagesAction::Reply { ticket, text } => {
+                commands::messages::reply::run(&client, &ticket, &text).await
+            }
+        },
+    }
+}
