@@ -230,7 +230,12 @@ This CLI currently covers a subset of the Gleap API, focused on ticket managemen
 
 The Gleap API has many more endpoints (help center, engagements, surveys, statistics, sessions, etc.) that are not yet implemented. Contributions welcome.
 
-For the full Gleap API documentation, see [docs.gleap.io](https://docs.gleap.io/documentation/server/api-overview).
+### Gleap API References
+
+- [API Overview](https://docs.gleap.io/documentation/server/api-overview) — Official REST API docs
+- [API Samples](https://docs.gleap.io/documentation/server/api-samples) — Request/response examples
+- [Postman Collection](https://documenter.getpostman.com/view/18586034/2s8YRiJYVC) — Interactive API explorer
+- [Full Docs Index](https://docs.gleap.io/llms.txt) — Complete endpoint listing
 
 ## Exit Codes
 
