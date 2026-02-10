@@ -49,11 +49,7 @@ impl<'a> MessagesClient<'a> {
     }
 
     /// Convenience: create an internal note on a ticket.
-    pub async fn create_note(
-        &self,
-        ticket_id: &str,
-        text: &str,
-    ) -> Result<Message, AppError> {
+    pub async fn create_note(&self, ticket_id: &str, text: &str) -> Result<Message, AppError> {
         let request = CreateMessageRequest {
             ticket: ticket_id.to_string(),
             comment: serde_json::Value::String(text.to_string()),
@@ -65,11 +61,7 @@ impl<'a> MessagesClient<'a> {
     }
 
     /// Convenience: create a comment reply on a ticket.
-    pub async fn create_comment(
-        &self,
-        ticket_id: &str,
-        text: &str,
-    ) -> Result<Message, AppError> {
+    pub async fn create_comment(&self, ticket_id: &str, text: &str) -> Result<Message, AppError> {
         let request = CreateMessageRequest {
             ticket: ticket_id.to_string(),
             comment: serde_json::Value::String(text.to_string()),

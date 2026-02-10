@@ -10,7 +10,7 @@ use crate::error::AppError;
 /// Core Gleap API client. Holds shared HTTP client and auth configuration.
 ///
 /// Access resource-specific clients via accessor methods:
-/// ```no_run
+/// ```ignore
 /// let client = GleapClient::new(config)?;
 /// client.tickets().list(filters).await?;
 /// client.messages().create_note(ticket_id, text).await?;
@@ -25,7 +25,7 @@ impl GleapClient {
         let http = reqwest::Client::builder()
             .user_agent("gleap-cli/0.1.0")
             .build()
-            .map_err(|e| AppError::Http(e))?;
+            .map_err(AppError::Http)?;
 
         Ok(Self { http, config })
     }
