@@ -76,7 +76,10 @@ impl<'a> TicketsClient<'a> {
         limit: Option<u64>,
         skip: Option<u64>,
     ) -> Result<TicketListResponse, AppError> {
-        let mut request = self.client.get("/tickets/search").query(&[("query", query)]);
+        let mut request = self
+            .client
+            .get("/tickets/search")
+            .query(&[("query", query)]);
 
         if let Some(limit) = limit {
             request = request.query(&[("limit", &limit.to_string())]);
@@ -91,10 +94,7 @@ impl<'a> TicketsClient<'a> {
     }
 
     /// Get activity logs for a ticket.
-    pub async fn activity_logs(
-        &self,
-        ticket_id: &str,
-    ) -> Result<serde_json::Value, AppError> {
+    pub async fn activity_logs(&self, ticket_id: &str) -> Result<serde_json::Value, AppError> {
         let request = self
             .client
             .get(&format!("/tickets/{}/activitylogs", ticket_id));
@@ -104,10 +104,7 @@ impl<'a> TicketsClient<'a> {
     }
 
     /// Get console logs for a ticket.
-    pub async fn console_logs(
-        &self,
-        ticket_id: &str,
-    ) -> Result<serde_json::Value, AppError> {
+    pub async fn console_logs(&self, ticket_id: &str) -> Result<serde_json::Value, AppError> {
         let request = self
             .client
             .get(&format!("/tickets/{}/consolelogs", ticket_id));
@@ -117,10 +114,7 @@ impl<'a> TicketsClient<'a> {
     }
 
     /// Get network logs for a ticket.
-    pub async fn network_logs(
-        &self,
-        ticket_id: &str,
-    ) -> Result<serde_json::Value, AppError> {
+    pub async fn network_logs(&self, ticket_id: &str) -> Result<serde_json::Value, AppError> {
         let request = self
             .client
             .get(&format!("/tickets/{}/networklogs", ticket_id));
