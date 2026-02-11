@@ -1,5 +1,7 @@
 use crate::error::AppError;
 
+pub mod keychain;
+
 pub struct GleapConfig {
     pub api_key: String,
     pub project_id: String,
@@ -7,6 +9,40 @@ pub struct GleapConfig {
 }
 
 impl GleapConfig {
+    /// Resolve credentials: env vars first, then system keychain.
+    pub fn resolve() -> Result<Self, AppError> {
+        let base_url = std::env::var("GLEAP_BASE_URL")
+            .unwrap_or_else(|_| "https://api.gleap.io/v3".to_string());
+
+        // Try env vars first (CI, automation, .env)
+        if let (Ok(api_key), Ok(project_id)) = (
+            std::env::var("GLEAP_API_KEY"),
+            std::env::var("GLEAP_PROJECT_ID"),
+        ) && !api_key.is_empty()
+            && !project_id.is_empty()
+        {
+            return Ok(Self {
+                api_key,
+                project_id,
+                base_url,
+            });
+        }
+
+        // Try system keychain
+        if let Ok((api_key, project_id)) = keychain::load_credentials() {
+            return Ok(Self {
+                api_key,
+                project_id,
+                base_url,
+            });
+        }
+
+        Err(AppError::Config(
+            "No credentials found. Run `gleap auth login` or set GLEAP_API_KEY and GLEAP_PROJECT_ID environment variables.".into(),
+        ))
+    }
+
+    /// Resolve from env vars only (backwards-compatible, used in tests).
     pub fn from_env() -> Result<Self, AppError> {
         let api_key = std::env::var("GLEAP_API_KEY")
             .map_err(|_| AppError::Config("GLEAP_API_KEY environment variable not set".into()))?;

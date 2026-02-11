@@ -41,17 +41,13 @@ impl<'a> TicketsClient<'a> {
             request = request.query(&[("skip", &skip.to_string())]);
         }
 
-        let response = self.client.send(request).await?;
-        let body = response.json::<TicketListResponse>().await?;
-        Ok(body)
+        self.client.send_and_parse(request).await
     }
 
     /// Get a single ticket by ID.
     pub async fn get(&self, ticket_id: &str) -> Result<Ticket, AppError> {
         let request = self.client.get(&format!("/tickets/{}", ticket_id));
-        let response = self.client.send(request).await?;
-        let ticket = response.json::<Ticket>().await?;
-        Ok(ticket)
+        self.client.send_and_parse(request).await
     }
 
     /// Update a ticket by ID. Accepts arbitrary JSON fields.
@@ -64,9 +60,7 @@ impl<'a> TicketsClient<'a> {
             .client
             .patch(&format!("/tickets/{}", ticket_id))
             .json(&fields);
-        let response = self.client.send(request).await?;
-        let ticket = response.json::<Ticket>().await?;
-        Ok(ticket)
+        self.client.send_and_parse(request).await
     }
 
     /// Search tickets by text query.
@@ -88,9 +82,7 @@ impl<'a> TicketsClient<'a> {
             request = request.query(&[("skip", &skip.to_string())]);
         }
 
-        let response = self.client.send(request).await?;
-        let body = response.json::<TicketListResponse>().await?;
-        Ok(body)
+        self.client.send_and_parse(request).await
     }
 
     /// Get activity logs for a ticket.
@@ -98,9 +90,7 @@ impl<'a> TicketsClient<'a> {
         let request = self
             .client
             .get(&format!("/tickets/{}/activitylogs", ticket_id));
-        let response = self.client.send(request).await?;
-        let body = response.json::<serde_json::Value>().await?;
-        Ok(body)
+        self.client.send_and_parse(request).await
     }
 
     /// Get console logs for a ticket.
@@ -108,9 +98,7 @@ impl<'a> TicketsClient<'a> {
         let request = self
             .client
             .get(&format!("/tickets/{}/consolelogs", ticket_id));
-        let response = self.client.send(request).await?;
-        let body = response.json::<serde_json::Value>().await?;
-        Ok(body)
+        self.client.send_and_parse(request).await
     }
 
     /// Get network logs for a ticket.
@@ -118,8 +106,6 @@ impl<'a> TicketsClient<'a> {
         let request = self
             .client
             .get(&format!("/tickets/{}/networklogs", ticket_id));
-        let response = self.client.send(request).await?;
-        let body = response.json::<serde_json::Value>().await?;
-        Ok(body)
+        self.client.send_and_parse(request).await
     }
 }

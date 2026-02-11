@@ -32,7 +32,6 @@ pub enum TicketPriority {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Ticket {
-    #[serde(rename = "_id")]
     pub id: String,
 
     #[serde(default)]
@@ -90,8 +89,8 @@ pub struct Ticket {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserRef {
-    #[serde(rename = "_id")]
-    pub id: String,
+    #[serde(default)]
+    pub id: Option<String>,
 
     #[serde(default)]
     pub email: Option<String>,
@@ -105,8 +104,8 @@ pub struct UserRef {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SessionRef {
-    #[serde(rename = "_id")]
-    pub id: String,
+    #[serde(default)]
+    pub id: Option<String>,
 
     #[serde(default)]
     pub email: Option<String>,

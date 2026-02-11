@@ -34,6 +34,9 @@ thiserror = "2"
 # URL construction
 url = "2"
 
+# Credential storage (platform backends are cfg-gated by the crate)
+keyring = { version = "3", features = ["apple-native", "windows-native", "linux-native"] }
+
 [dev-dependencies]
 cargo-husky = { version = "1", default-features = false, features = ["user-hooks"] }
 serial_test = "3"

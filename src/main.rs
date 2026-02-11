@@ -6,7 +6,7 @@ mod commands;
 use gleap::client::GleapClient;
 use gleap::error::AppError;
 
-use cli::{Cli, Domain, LogsAction, MessagesAction, TicketsAction};
+use cli::{AuthAction, Cli, Domain, LogsAction, MessagesAction, TicketsAction};
 
 #[tokio::main]
 async fn main() {
@@ -18,9 +18,20 @@ async fn main() {
 
 async fn run() -> Result<(), AppError> {
     let cli = Cli::parse();
-    let client = GleapClient::from_env()?;
+
+    // Auth commands don't need a client
+    if let Domain::Auth { action } = cli.domain {
+        return match action {
+            AuthAction::Login => commands::auth::login(),
+            AuthAction::Logout => commands::auth::logout(),
+            AuthAction::Status => commands::auth::status(),
+        };
+    }
+
+    let client = GleapClient::resolve()?.with_verbose(cli.verbose);
 
     match cli.domain {
+        Domain::Auth { .. } => unreachable!(),
         Domain::Tickets { action } => match action {
             TicketsAction::List {
                 status,

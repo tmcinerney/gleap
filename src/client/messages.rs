@@ -35,17 +35,13 @@ impl<'a> MessagesClient<'a> {
             request = request.query(&[("skip", &skip.to_string())]);
         }
 
-        let response = self.client.send(request).await?;
-        let messages = response.json::<Vec<Message>>().await?;
-        Ok(messages)
+        self.client.send_and_parse(request).await
     }
 
     /// Create a new message (comment or internal note) on a ticket.
     pub async fn create(&self, request: &CreateMessageRequest) -> Result<Message, AppError> {
         let req = self.client.post("/messages").json(request);
-        let response = self.client.send(req).await?;
-        let message = response.json::<Message>().await?;
-        Ok(message)
+        self.client.send_and_parse(req).await
     }
 
     /// Convenience: create an internal note on a ticket.
