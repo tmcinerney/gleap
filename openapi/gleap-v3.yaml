@@ -184,28 +184,47 @@ components:
           description: Associated ticket ID
         comment:
           description: |
-            Message content. Can be a plain string or a structured document
-            object with type "doc" and nested content array.
+            Write-only: used when creating messages. Always null in API responses.
+            Actual content is returned in data.content.
           oneOf:
             - type: string
             - type: object
-              properties:
-                type:
-                  type: string
-                  enum: [doc]
-                content:
-                  type: array
-                  items:
-                    type: object
-                    additionalProperties: true
         type:
           type: string
-          enum: [COMMENT, NOTE]
+          enum: [TEXT, NOTE, BOT, BOT_REPLY, USER_TEXT, SHARED_COMMENT, FEEDBACK_UPDATED]
+        data:
+          type: object
+          description: |
+            Envelope for message content. The actual message text lives in
+            data.content, which can be a plain string or a rich document object.
+          properties:
+            content:
+              description: |
+                Message content. Can be a plain string or a structured document
+                object with type "doc" and nested content array.
+              oneOf:
+                - type: string
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                      enum: [doc]
+                    content:
+                      type: array
+                      items:
+                        type: object
+                        additionalProperties: true
+          additionalProperties: true
         bot:
           type: boolean
         isNote:
           type: boolean
-          description: Whether this message is an internal note
+          description: |
+            Write-only: used when creating messages to mark as internal note.
+            Always null in API responses. Use type == NOTE to identify notes.
+        isReply:
+          type: boolean
+          description: Whether this message is a reply
         user:
           $ref: "#/components/schemas/UserRef"
         session:

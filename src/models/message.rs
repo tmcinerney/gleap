@@ -3,23 +3,57 @@ use serde::{Deserialize, Serialize};
 use super::ticket::{SessionRef, UserRef};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum MessageType {
+    Text,
+    Note,
+    Bot,
+    BotReply,
+    UserText,
+    SharedComment,
+    FeedbackUpdated,
+    #[serde(other)]
+    Unknown,
+}
+
+/// The `data` envelope returned by the API for message content.
+/// The actual message text lives in `content`, which can be a plain
+/// string or a rich document object.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct MessageData {
+    #[serde(default)]
+    pub content: Option<serde_json::Value>,
+
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Message {
     pub id: String,
 
     #[serde(default)]
     pub ticket: Option<String>,
 
+    /// Write-only: always null in API responses. Content lives in `data.content`.
     #[serde(default)]
     pub comment: Option<serde_json::Value>,
 
     #[serde(rename = "type", default)]
-    pub message_type: Option<String>,
+    pub message_type: Option<MessageType>,
+
+    #[serde(default)]
+    pub data: Option<MessageData>,
 
     #[serde(default)]
     pub bot: Option<bool>,
 
+    /// Write-only: always null in API responses. Use `message_type` to check for notes.
     #[serde(rename = "isNote", default)]
     pub is_note: Option<bool>,
+
+    #[serde(rename = "isReply", default)]
+    pub is_reply: Option<bool>,
 
     #[serde(default)]
     pub user: Option<UserRef>,
