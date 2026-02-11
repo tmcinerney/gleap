@@ -26,6 +26,32 @@ pub enum TicketsAction {
         pagination: Pagination,
     },
 
+    /// Create a new ticket
+    Create {
+        /// Ticket title
+        title: String,
+
+        /// Ticket type (e.g. BUG, FEATURE_REQUEST, INQUIRY)
+        #[arg(long = "type")]
+        ticket_type: Option<String>,
+
+        /// Ticket status (e.g. OPEN, INPROGRESS, DONE)
+        #[arg(long)]
+        status: Option<String>,
+
+        /// Ticket priority (e.g. LOW, MEDIUM, HIGH)
+        #[arg(long)]
+        priority: Option<String>,
+
+        /// Ticket description
+        #[arg(long)]
+        description: Option<String>,
+
+        /// Comma-separated tags (gleap-cli is always appended)
+        #[arg(long)]
+        tags: Option<String>,
+    },
+
     /// Get a single ticket by ID
     Get {
         /// Ticket ID

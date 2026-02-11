@@ -101,10 +101,10 @@ components:
           type: string
         type:
           type: string
-          enum: [BUG, FEATURE_REQUEST, INQUIRY]
+          enum: [BUG, FEATURE_REQUEST, INQUIRY, BOT]
         status:
           type: string
-          enum: [OPEN, IN_PROGRESS, DONE]
+          enum: [OPEN, INPROGRESS, DONE]
         priority:
           type: string
           enum: [LOW, MEDIUM, HIGH]
@@ -259,10 +259,10 @@ components:
           type: string
         type:
           type: string
-          enum: [BUG, FEATURE_REQUEST, INQUIRY]
+          enum: [BUG, FEATURE_REQUEST, INQUIRY, BOT]
         status:
           type: string
-          enum: [OPEN, IN_PROGRESS, DONE]
+          enum: [OPEN, INPROGRESS, DONE]
         priority:
           type: string
           enum: [LOW, MEDIUM, HIGH]
@@ -294,7 +294,7 @@ components:
           type: string
         status:
           type: string
-          enum: [OPEN, IN_PROGRESS, DONE]
+          enum: [OPEN, INPROGRESS, DONE]
         priority:
           type: string
           enum: [LOW, MEDIUM, HIGH]

@@ -51,6 +51,25 @@ async fn run() -> Result<(), AppError> {
                 )
                 .await
             }
+            TicketsAction::Create {
+                title,
+                ticket_type,
+                status,
+                priority,
+                description,
+                tags,
+            } => {
+                commands::tickets::create::run(
+                    &client,
+                    &title,
+                    ticket_type,
+                    status,
+                    priority,
+                    description,
+                    tags,
+                )
+                .await
+            }
             TicketsAction::Get { id } => commands::tickets::get::run(&client, &id).await,
             TicketsAction::Search { query } => {
                 commands::tickets::search::run(&client, &query).await

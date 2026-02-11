@@ -63,6 +63,12 @@ impl<'a> TicketsClient<'a> {
         self.client.send_and_parse(request).await
     }
 
+    /// Create a new ticket.
+    pub async fn create(&self, fields: serde_json::Value) -> Result<Ticket, AppError> {
+        let request = self.client.post("/tickets").json(&fields);
+        self.client.send_and_parse(request).await
+    }
+
     /// Full-text search tickets.
     pub async fn search(&self, query: &str) -> Result<serde_json::Value, AppError> {
         let request = self

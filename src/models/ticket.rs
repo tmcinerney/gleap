@@ -6,6 +6,8 @@ pub enum TicketType {
     Bug,
     FeatureRequest,
     Inquiry,
+    #[serde(rename = "BOT")]
+    Bot,
     #[serde(other)]
     Unknown,
 }
@@ -14,6 +16,7 @@ pub enum TicketType {
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum TicketStatus {
     Open,
+    #[serde(rename = "INPROGRESS")]
     InProgress,
     Done,
     #[serde(other)]
