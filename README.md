@@ -4,11 +4,32 @@ An unofficial command-line tool for the [Gleap](https://gleap.io) customer suppo
 
 > **Disclaimer**: This is an **unofficial**, community-built tool. It is not affiliated with, endorsed by, or supported by Gleap. Use at your own risk.
 
-## Quick Start
+## Installation
+
+### Pre-built binaries (recommended)
+
+Download the latest release for your platform from [GitHub Releases](https://github.com/tmcinerney/gleap/releases/latest):
+
+| Platform | Asset |
+|----------|-------|
+| macOS (Apple Silicon) | `gleap-darwin-aarch64.tar.gz` |
+| macOS (Intel) | `gleap-darwin-x86_64.tar.gz` |
+| Linux (x86_64) | `gleap-linux-x86_64.tar.gz` |
+
+```bash
+curl -fsSL https://github.com/tmcinerney/gleap/releases/latest/download/gleap-darwin-aarch64.tar.gz | tar -xz
+sudo mv gleap /usr/local/bin/
+```
+
+### From source
 
 ```bash
 cargo install --path .
+```
 
+## Quick Start
+
+```bash
 # Authenticate (stored in system keychain)
 gleap auth login
 
