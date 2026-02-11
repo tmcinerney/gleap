@@ -58,29 +58,17 @@ impl<'a> TicketsClient<'a> {
     ) -> Result<Ticket, AppError> {
         let request = self
             .client
-            .patch(&format!("/tickets/{}", ticket_id))
+            .put(&format!("/tickets/{}", ticket_id))
             .json(&fields);
         self.client.send_and_parse(request).await
     }
 
-    /// Search tickets by text query.
-    pub async fn search(
-        &self,
-        query: &str,
-        limit: Option<u64>,
-        skip: Option<u64>,
-    ) -> Result<TicketListResponse, AppError> {
-        let mut request = self
+    /// Full-text search tickets.
+    pub async fn search(&self, query: &str) -> Result<serde_json::Value, AppError> {
+        let request = self
             .client
             .get("/tickets/search")
-            .query(&[("query", query)]);
-
-        if let Some(limit) = limit {
-            request = request.query(&[("limit", &limit.to_string())]);
-        }
-        if let Some(skip) = skip {
-            request = request.query(&[("skip", &skip.to_string())]);
-        }
+            .query(&[("searchTerm", query)]);
 
         self.client.send_and_parse(request).await
     }
@@ -89,7 +77,7 @@ impl<'a> TicketsClient<'a> {
     pub async fn activity_logs(&self, ticket_id: &str) -> Result<serde_json::Value, AppError> {
         let request = self
             .client
-            .get(&format!("/tickets/{}/activitylogs", ticket_id));
+            .get(&format!("/tickets/{}/activity-logs", ticket_id));
         self.client.send_and_parse(request).await
     }
 
@@ -97,7 +85,7 @@ impl<'a> TicketsClient<'a> {
     pub async fn console_logs(&self, ticket_id: &str) -> Result<serde_json::Value, AppError> {
         let request = self
             .client
-            .get(&format!("/tickets/{}/consolelogs", ticket_id));
+            .get(&format!("/tickets/{}/console-logs", ticket_id));
         self.client.send_and_parse(request).await
     }
 
@@ -105,7 +93,7 @@ impl<'a> TicketsClient<'a> {
     pub async fn network_logs(&self, ticket_id: &str) -> Result<serde_json::Value, AppError> {
         let request = self
             .client
-            .get(&format!("/tickets/{}/networklogs", ticket_id));
+            .get(&format!("/tickets/{}/network-logs", ticket_id));
         self.client.send_and_parse(request).await
     }
 }

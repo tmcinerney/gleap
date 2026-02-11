@@ -52,9 +52,8 @@ async fn run() -> Result<(), AppError> {
                 .await
             }
             TicketsAction::Get { id } => commands::tickets::get::run(&client, &id).await,
-            TicketsAction::Search { query, pagination } => {
-                commands::tickets::search::run(&client, &query, pagination.limit, pagination.skip)
-                    .await
+            TicketsAction::Search { query } => {
+                commands::tickets::search::run(&client, &query).await
             }
             TicketsAction::Update {
                 id,

@@ -85,14 +85,14 @@ impl GleapClient {
             .header("project", &self.config.project_id)
     }
 
-    /// Build a PATCH request with auth headers pre-applied.
-    pub(crate) fn patch(&self, path: &str) -> reqwest::RequestBuilder {
+    /// Build a PUT request with auth headers pre-applied.
+    pub(crate) fn put(&self, path: &str) -> reqwest::RequestBuilder {
         let url = format!("{}{}", self.config.base_url, path);
         if self.verbose >= 1 {
-            eprintln!("> PATCH {url}");
+            eprintln!("> PUT {url}");
         }
         self.http
-            .patch(&url)
+            .put(&url)
             .bearer_auth(&self.config.api_key)
             .header("project", &self.config.project_id)
     }

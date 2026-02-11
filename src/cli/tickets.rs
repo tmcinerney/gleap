@@ -32,13 +32,10 @@ pub enum TicketsAction {
         id: String,
     },
 
-    /// Search tickets by text query
+    /// Full-text search tickets (returns up to 30 results ranked by relevance)
     Search {
         /// Search query text
         query: String,
-
-        #[command(flatten)]
-        pagination: Pagination,
     },
 
     /// Update a ticket

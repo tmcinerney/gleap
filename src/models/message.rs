@@ -4,7 +4,6 @@ use super::ticket::{SessionRef, UserRef};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Message {
-    #[serde(rename = "_id")]
     pub id: String,
 
     #[serde(default)]
