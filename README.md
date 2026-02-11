@@ -87,6 +87,10 @@ gleap tickets get <ID>
 # Full-text search (returns up to 30 results ranked by relevance)
 gleap tickets search "login button not working"
 
+# Create a ticket (auto-tagged with "gleap-cli")
+gleap tickets create "Login page broken on mobile"
+gleap tickets create "Add dark mode" --type FEATURE_REQUEST --priority LOW --tags "ui,frontend"
+
 # Update a ticket
 gleap tickets update <ID> --status DONE
 gleap tickets update <ID> --priority HIGH --title "New title"
@@ -126,7 +130,7 @@ gleap -vvv tickets list     # + full response body always
 | Resource | Operations |
 |----------|-----------|
 | **Auth** | login, logout, status |
-| **Tickets** | list, get, search, update, logs (console, network, activity) |
+| **Tickets** | list, get, search, create, update, logs (console, network, activity) |
 | **Messages** | list, note (internal), reply (comment) |
 
 The Gleap API has many more endpoints (help center, engagements, surveys, statistics, sessions, etc.) that are not yet implemented. Contributions welcome.
@@ -181,7 +185,7 @@ src/
 │   └── message.rs
 └── commands/            # Command handlers
     ├── auth.rs
-    ├── tickets/         # list, get, search, update, logs
+    ├── tickets/         # list, get, search, create, update, logs
     └── messages/        # list, note, reply
 ```
 
