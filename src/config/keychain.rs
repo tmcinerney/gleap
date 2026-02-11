@@ -1,64 +1,55 @@
 use crate::error::AppError;
+use serde::{Deserialize, Serialize};
 
 const SERVICE: &str = "gleap-cli";
-const ACCOUNT_API_KEY: &str = "api-key";
-const ACCOUNT_PROJECT_ID: &str = "project-id";
+const ACCOUNT: &str = "credentials";
 
-/// Store API key and project ID in the system keychain.
+#[derive(Serialize, Deserialize)]
+struct Credentials {
+    api_key: String,
+    project_id: String,
+}
+
+/// Store API key and project ID as a single keychain entry.
 pub fn store_credentials(api_key: &str, project_id: &str) -> Result<(), AppError> {
-    let key_entry = keyring::Entry::new(SERVICE, ACCOUNT_API_KEY)
-        .map_err(|e| AppError::Config(format!("Failed to access keychain: {e}")))?;
-    key_entry
-        .set_password(api_key)
-        .map_err(|e| AppError::Config(format!("Failed to store API key in keychain: {e}")))?;
+    let creds = Credentials {
+        api_key: api_key.to_string(),
+        project_id: project_id.to_string(),
+    };
+    let json = serde_json::to_string(&creds)
+        .map_err(|e| AppError::Config(format!("Failed to serialize credentials: {e}")))?;
 
-    let project_entry = keyring::Entry::new(SERVICE, ACCOUNT_PROJECT_ID)
+    let entry = keyring::Entry::new(SERVICE, ACCOUNT)
         .map_err(|e| AppError::Config(format!("Failed to access keychain: {e}")))?;
-    project_entry
-        .set_password(project_id)
-        .map_err(|e| AppError::Config(format!("Failed to store project ID in keychain: {e}")))?;
+    entry
+        .set_password(&json)
+        .map_err(|e| AppError::Config(format!("Failed to store credentials in keychain: {e}")))?;
 
     Ok(())
 }
 
 /// Load API key and project ID from the system keychain.
 pub fn load_credentials() -> Result<(String, String), AppError> {
-    let key_entry = keyring::Entry::new(SERVICE, ACCOUNT_API_KEY)
+    let entry = keyring::Entry::new(SERVICE, ACCOUNT)
         .map_err(|e| AppError::Config(format!("Failed to access keychain: {e}")))?;
-    let api_key = key_entry
+    let json = entry
         .get_password()
-        .map_err(|e| AppError::Config(format!("Failed to read API key from keychain: {e}")))?;
+        .map_err(|e| AppError::Config(format!("Failed to read credentials from keychain: {e}")))?;
+    let creds: Credentials = serde_json::from_str(&json)
+        .map_err(|e| AppError::Config(format!("Failed to parse credentials from keychain: {e}")))?;
 
-    let project_entry = keyring::Entry::new(SERVICE, ACCOUNT_PROJECT_ID)
-        .map_err(|e| AppError::Config(format!("Failed to access keychain: {e}")))?;
-    let project_id = project_entry
-        .get_password()
-        .map_err(|e| AppError::Config(format!("Failed to read project ID from keychain: {e}")))?;
-
-    Ok((api_key, project_id))
+    Ok((creds.api_key, creds.project_id))
 }
 
 /// Delete credentials from the system keychain.
 pub fn delete_credentials() -> Result<(), AppError> {
-    let key_entry = keyring::Entry::new(SERVICE, ACCOUNT_API_KEY)
+    let entry = keyring::Entry::new(SERVICE, ACCOUNT)
         .map_err(|e| AppError::Config(format!("Failed to access keychain: {e}")))?;
-    // Ignore NoEntry errors — credential might not exist
-    match key_entry.delete_credential() {
+    match entry.delete_credential() {
         Ok(()) | Err(keyring::Error::NoEntry) => {}
         Err(e) => {
             return Err(AppError::Config(format!(
-                "Failed to delete API key from keychain: {e}"
-            )));
-        }
-    }
-
-    let project_entry = keyring::Entry::new(SERVICE, ACCOUNT_PROJECT_ID)
-        .map_err(|e| AppError::Config(format!("Failed to access keychain: {e}")))?;
-    match project_entry.delete_credential() {
-        Ok(()) | Err(keyring::Error::NoEntry) => {}
-        Err(e) => {
-            return Err(AppError::Config(format!(
-                "Failed to delete project ID from keychain: {e}"
+                "Failed to delete credentials from keychain: {e}"
             )));
         }
     }

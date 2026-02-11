@@ -79,7 +79,7 @@ All commands output JSON. Pipe to `jq` for filtering.
 ```bash
 # List with filters
 gleap tickets list --status OPEN --type BUG --priority HIGH
-gleap tickets list --sort -createdAt --limit 10 --skip 10
+gleap tickets list --status INPROGRESS --limit 10 --skip 10
 
 # Get a single ticket
 gleap tickets get <ID>

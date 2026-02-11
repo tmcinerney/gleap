@@ -6,12 +6,12 @@ use super::shared::Pagination;
 pub enum TicketsAction {
     /// List tickets with optional filters
     List {
-        /// Filter by status (e.g. OPEN, IN_PROGRESS, DONE)
+        /// Filter by status (e.g. OPEN, INPROGRESS, DONE)
         #[arg(long)]
         status: Option<String>,
 
         /// Filter by type (e.g. BUG, FEATURE_REQUEST, INQUIRY)
-        #[arg(long, name = "type")]
+        #[arg(long = "type")]
         ticket_type: Option<String>,
 
         /// Filter by priority (e.g. LOW, MEDIUM, HIGH)
@@ -19,7 +19,7 @@ pub enum TicketsAction {
         priority: Option<String>,
 
         /// Sort field with direction prefix (e.g. -createdAt, priority)
-        #[arg(long, default_value = "-createdAt")]
+        #[arg(long, default_value = "-createdAt", allow_hyphen_values = true)]
         sort: String,
 
         #[command(flatten)]
