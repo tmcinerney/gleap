@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/tmcinerney/gleap/compare/v0.2.0...v0.2.1) (2026-02-11)
+
+
+### Bug Fixes
+
+* consolidate keychain into single entry and fix CLI arg parsing ([608d161](https://github.com/tmcinerney/gleap/commit/608d161ac80b6012302fe5c67f8b3f0828c655ce))
+
 ## [0.2.0](https://github.com/tmcinerney/gleap/compare/v0.1.0...v0.2.0) (2026-02-11)
 
 
