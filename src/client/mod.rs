@@ -97,6 +97,18 @@ impl GleapClient {
             .header("project", &self.config.project_id)
     }
 
+    /// Build a DELETE request with auth headers pre-applied.
+    pub(crate) fn delete(&self, path: &str) -> reqwest::RequestBuilder {
+        let url = format!("{}{}", self.config.base_url, path);
+        if self.verbose >= 1 {
+            eprintln!("> DELETE {url}");
+        }
+        self.http
+            .delete(&url)
+            .bearer_auth(&self.config.api_key)
+            .header("project", &self.config.project_id)
+    }
+
     /// Send a request and handle common error responses.
     pub(crate) async fn send(
         &self,

@@ -80,6 +80,7 @@ async fn run() -> Result<(), AppError> {
                 priority,
                 title,
             } => commands::tickets::update::run(&client, &id, status, priority, title).await,
+            TicketsAction::Delete { id } => commands::tickets::delete::run(&client, &id).await,
             TicketsAction::Logs { action } => match action {
                 LogsAction::Console { id } => {
                     commands::tickets::console_logs::run(&client, &id).await
@@ -97,6 +98,7 @@ async fn run() -> Result<(), AppError> {
                 commands::messages::list::run(&client, &ticket, pagination.limit, pagination.skip)
                     .await
             }
+            MessagesAction::Delete { id } => commands::messages::delete::run(&client, &id).await,
             MessagesAction::Note { ticket, text } => {
                 commands::messages::note::run(&client, &ticket, &text).await
             }

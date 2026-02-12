@@ -79,6 +79,12 @@ impl<'a> TicketsClient<'a> {
         self.client.send_and_parse(request).await
     }
 
+    /// Delete a ticket by ID.
+    pub async fn delete(&self, ticket_id: &str) -> Result<serde_json::Value, AppError> {
+        let request = self.client.delete(&format!("/tickets/{}", ticket_id));
+        self.client.send_and_parse(request).await
+    }
+
     /// Get activity logs for a ticket.
     pub async fn activity_logs(&self, ticket_id: &str) -> Result<serde_json::Value, AppError> {
         let request = self
