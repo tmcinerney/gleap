@@ -110,7 +110,6 @@ pub struct MessageFilters {
     pub ticket: Option<String>,
     pub message_type: Option<String>,
     pub bot: Option<bool>,
-    pub sort: Option<String>,
     pub limit: Option<u64>,
     pub skip: Option<u64>,
 }

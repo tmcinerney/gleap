@@ -93,19 +93,9 @@ async fn run() -> Result<(), AppError> {
             },
         },
         Domain::Messages { action } => match action {
-            MessagesAction::List {
-                ticket,
-                sort,
-                pagination,
-            } => {
-                commands::messages::list::run(
-                    &client,
-                    &ticket,
-                    sort,
-                    pagination.limit,
-                    pagination.skip,
-                )
-                .await
+            MessagesAction::List { ticket, pagination } => {
+                commands::messages::list::run(&client, &ticket, pagination.limit, pagination.skip)
+                    .await
             }
             MessagesAction::Note { ticket, text } => {
                 commands::messages::note::run(&client, &ticket, &text).await

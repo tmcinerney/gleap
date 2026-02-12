@@ -10,10 +10,6 @@ pub enum MessagesAction {
         #[arg(long)]
         ticket: String,
 
-        /// Sort field with direction prefix (e.g. -createdAt, createdAt)
-        #[arg(long, default_value = "createdAt", allow_hyphen_values = true)]
-        sort: String,
-
         #[command(flatten)]
         pagination: Pagination,
     },

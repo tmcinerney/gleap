@@ -534,7 +534,8 @@ paths:
       summary: Get messages
       description: |
         Retrieve messages with optional filtering by ticket, type, bot status, and date range.
-        Supports sorting, pagination, and auto-translation.
+        Messages are always returned in conversation order (by index).
+        The sort parameter is accepted but has no effect.
       parameters:
         - $ref: "#/components/parameters/ProjectHeader"
         - name: ticket

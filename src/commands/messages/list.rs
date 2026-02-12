@@ -5,13 +5,11 @@ use gleap::models::message::MessageFilters;
 pub async fn run(
     client: &GleapClient,
     ticket: &str,
-    sort: String,
     limit: u64,
     skip: u64,
 ) -> Result<(), AppError> {
     let filters = MessageFilters {
         ticket: Some(ticket.to_string()),
-        sort: Some(sort),
         limit: Some(limit),
         skip: Some(skip),
         ..Default::default()

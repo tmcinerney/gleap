@@ -25,9 +25,6 @@ impl<'a> MessagesClient<'a> {
         if let Some(bot) = filters.bot {
             request = request.query(&[("bot", &bot.to_string())]);
         }
-        if let Some(ref sort) = filters.sort {
-            request = request.query(&[("sort", sort.as_str())]);
-        }
         if let Some(limit) = filters.limit {
             request = request.query(&[("limit", &limit.to_string())]);
         }

@@ -106,7 +106,7 @@ gleap tickets logs activity <ID>
 ```bash
 # List messages on a ticket
 gleap messages list --ticket <ID>
-gleap messages list --ticket <ID> --sort -createdAt --limit 5
+gleap messages list --ticket <ID> --limit 5
 
 # Add an internal note (team only)
 gleap messages note --ticket <ID> "Root cause identified in auth service."
