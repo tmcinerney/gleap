@@ -1,7 +1,9 @@
+mod articles;
 mod collections;
 mod messages;
 mod tickets;
 
+pub use articles::ArticlesClient;
 pub use collections::CollectionsClient;
 pub use messages::MessagesClient;
 pub use tickets::TicketsClient;
@@ -65,6 +67,10 @@ impl GleapClient {
 
     pub fn collections(&self) -> CollectionsClient<'_> {
         CollectionsClient::new(self)
+    }
+
+    pub fn articles(&self) -> ArticlesClient<'_> {
+        ArticlesClient::new(self)
     }
 
     /// Build a GET request with auth headers pre-applied.

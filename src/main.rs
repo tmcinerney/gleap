@@ -6,7 +6,10 @@ mod commands;
 use gleap::client::GleapClient;
 use gleap::error::AppError;
 
-use cli::{AuthAction, Cli, CollectionsAction, Domain, LogsAction, MessagesAction, TicketsAction};
+use cli::{
+    ArticlesAction, AuthAction, Cli, CollectionsAction, Domain, LogsAction, MessagesAction,
+    TicketsAction,
+};
 
 #[tokio::main]
 async fn main() {
@@ -121,6 +124,66 @@ async fn run() -> Result<(), AppError> {
             } => commands::collections::update::run(&client, &id, title, description).await,
             CollectionsAction::Delete { id } => {
                 commands::collections::delete::run(&client, &id).await
+            }
+        },
+        Domain::Articles { action } => match action {
+            ArticlesAction::List {
+                collection,
+                pagination,
+            } => {
+                commands::articles::list::run(
+                    &client,
+                    &collection,
+                    pagination.limit,
+                    pagination.skip,
+                )
+                .await
+            }
+            ArticlesAction::Get { id, collection } => {
+                commands::articles::get::run(&client, &collection, &id).await
+            }
+            ArticlesAction::Create {
+                collection,
+                title,
+                content_file,
+                language,
+                published,
+                tags,
+            } => {
+                commands::articles::create::run(
+                    &client,
+                    &collection,
+                    &title,
+                    content_file,
+                    &language,
+                    published,
+                    tags,
+                )
+                .await
+            }
+            ArticlesAction::Update {
+                id,
+                collection,
+                title,
+                content_file,
+                language,
+                published,
+                tags,
+            } => {
+                let params = commands::articles::update::UpdateParams {
+                    title,
+                    content_file,
+                    language,
+                    published,
+                    tags,
+                };
+                commands::articles::update::run(&client, &collection, &id, params).await
+            }
+            ArticlesAction::Delete { id, collection } => {
+                commands::articles::delete::run(&client, &collection, &id).await
+            }
+            ArticlesAction::Move { id, collection, to } => {
+                commands::articles::move_article::run(&client, &collection, &id, &to).await
             }
         },
     }

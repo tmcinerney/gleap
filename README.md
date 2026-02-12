@@ -141,6 +141,30 @@ gleap collections update <ID> --title "Updated Title"
 gleap collections delete <ID>
 ```
 
+### Articles (Help Center)
+
+```bash
+# List articles in a collection
+gleap articles list --collection <ID>
+
+# Get a single article
+gleap articles get --collection <ID> <ARTICLE_ID>
+
+# Create an article (defaults to draft, English)
+gleap articles create --collection <ID> --title "Getting Started" --content-file content.json
+gleap articles create --collection <ID> --title "Erste Schritte" --language de --published
+
+# Update an article
+gleap articles update --collection <ID> <ARTICLE_ID> --title "Updated Title"
+gleap articles update --collection <ID> <ARTICLE_ID> --content-file updated.json --published true
+
+# Delete an article
+gleap articles delete --collection <ID> <ARTICLE_ID>
+
+# Move an article to a different collection
+gleap articles move --collection <ID> <ARTICLE_ID> --to <TARGET_COLLECTION_ID>
+```
+
 ## Verbose Output
 
 Use `-v` flags globally for debugging:
@@ -159,6 +183,7 @@ gleap -vvv tickets list     # + full response body always
 | **Tickets** | list, get, search, create, update, delete, logs (console, network, activity) |
 | **Messages** | list, note (internal), reply (comment), delete |
 | **Collections** | list, get, create, update, delete |
+| **Articles** | list, get, create, update, delete, move |
 
 The Gleap API has many more endpoints (engagements, surveys, statistics, sessions, etc.) that are not yet implemented. Contributions welcome.
 
@@ -203,21 +228,25 @@ src/
 │   ├── tickets.rs
 │   ├── messages.rs
 │   ├── collections.rs
+│   ├── articles.rs
 │   └── shared.rs        # Shared args (pagination)
 ├── client/              # Gleap API HTTP client
 │   ├── mod.rs           # GleapClient (auth, request helpers, verbose logging)
 │   ├── tickets.rs
 │   ├── messages.rs
-│   └── collections.rs
+│   ├── collections.rs
+│   └── articles.rs
 ├── models/              # Request/response types
 │   ├── ticket.rs
 │   ├── message.rs
-│   └── collection.rs
+│   ├── collection.rs
+│   └── article.rs
 └── commands/            # Command handlers
     ├── auth.rs
     ├── tickets/         # list, get, search, create, update, delete, logs
     ├── messages/        # list, note, reply, delete
-    └── collections/     # list, get, create, update, delete
+    ├── collections/     # list, get, create, update, delete
+    └── articles/        # list, get, create, update, delete, move
 ```
 
 ## License
