@@ -95,6 +95,9 @@ gleap tickets create "Add dark mode" --type FEATURE_REQUEST --priority LOW --tag
 gleap tickets update <ID> --status DONE
 gleap tickets update <ID> --priority HIGH --title "New title"
 
+# Delete a ticket
+gleap tickets delete <ID>
+
 # View captured logs
 gleap tickets logs console <ID>
 gleap tickets logs network <ID>
@@ -110,6 +113,9 @@ gleap messages list --ticket <ID> --limit 5
 
 # Add an internal note (team only)
 gleap messages note --ticket <ID> "Root cause identified in auth service."
+
+# Delete a message
+gleap messages delete <ID>
 
 # Reply to the customer
 gleap messages reply --ticket <ID> "We've deployed a fix. Please try again."
@@ -130,8 +136,8 @@ gleap -vvv tickets list     # + full response body always
 | Resource | Operations |
 |----------|-----------|
 | **Auth** | login, logout, status |
-| **Tickets** | list, get, search, create, update, logs (console, network, activity) |
-| **Messages** | list, note (internal), reply (comment) |
+| **Tickets** | list, get, search, create, update, delete, logs (console, network, activity) |
+| **Messages** | list, note (internal), reply (comment), delete |
 
 The Gleap API has many more endpoints (help center, engagements, surveys, statistics, sessions, etc.) that are not yet implemented. Contributions welcome.
 
@@ -185,8 +191,8 @@ src/
 │   └── message.rs
 └── commands/            # Command handlers
     ├── auth.rs
-    ├── tickets/         # list, get, search, create, update, logs
-    └── messages/        # list, note, reply
+    ├── tickets/         # list, get, search, create, update, delete, logs
+    └── messages/        # list, note, reply, delete
 ```
 
 ## License
