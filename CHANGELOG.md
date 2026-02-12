@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/tmcinerney/gleap/compare/v0.2.1...v0.3.0) (2026-02-12)
+
+
+### Features
+
+* add tickets create command and fix deserialization bugs ([296ce94](https://github.com/tmcinerney/gleap/commit/296ce9455540b2da7c18aea420438a727f994b65))
+
+
+### Bug Fixes
+
+* correct message model to capture content from data.content ([8d35159](https://github.com/tmcinerney/gleap/commit/8d351591e1c006a4b2f70ee1f647e645b8468da5))
+* remove non-functional sort parameter from messages list ([617ecce](https://github.com/tmcinerney/gleap/commit/617ecce626b155e885d3e300aaeb56d020bfd1d5))
+
 ## [0.2.1](https://github.com/tmcinerney/gleap/compare/v0.2.0...v0.2.1) (2026-02-11)
 
 
