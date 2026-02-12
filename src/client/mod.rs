@@ -1,6 +1,10 @@
+mod articles;
+mod collections;
 mod messages;
 mod tickets;
 
+pub use articles::ArticlesClient;
+pub use collections::CollectionsClient;
 pub use messages::MessagesClient;
 pub use tickets::TicketsClient;
 
@@ -61,6 +65,14 @@ impl GleapClient {
         MessagesClient::new(self)
     }
 
+    pub fn collections(&self) -> CollectionsClient<'_> {
+        CollectionsClient::new(self)
+    }
+
+    pub fn articles(&self) -> ArticlesClient<'_> {
+        ArticlesClient::new(self)
+    }
+
     /// Build a GET request with auth headers pre-applied.
     pub(crate) fn get(&self, path: &str) -> reqwest::RequestBuilder {
         let url = format!("{}{}", self.config.base_url, path);
@@ -93,6 +105,18 @@ impl GleapClient {
         }
         self.http
             .put(&url)
+            .bearer_auth(&self.config.api_key)
+            .header("project", &self.config.project_id)
+    }
+
+    /// Build a DELETE request with auth headers pre-applied.
+    pub(crate) fn delete(&self, path: &str) -> reqwest::RequestBuilder {
+        let url = format!("{}{}", self.config.base_url, path);
+        if self.verbose >= 1 {
+            eprintln!("> DELETE {url}");
+        }
+        self.http
+            .delete(&url)
             .bearer_auth(&self.config.api_key)
             .header("project", &self.config.project_id)
     }

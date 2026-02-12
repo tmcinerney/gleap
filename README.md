@@ -95,6 +95,9 @@ gleap tickets create "Add dark mode" --type FEATURE_REQUEST --priority LOW --tag
 gleap tickets update <ID> --status DONE
 gleap tickets update <ID> --priority HIGH --title "New title"
 
+# Delete a ticket
+gleap tickets delete <ID>
+
 # View captured logs
 gleap tickets logs console <ID>
 gleap tickets logs network <ID>
@@ -111,8 +114,55 @@ gleap messages list --ticket <ID> --limit 5
 # Add an internal note (team only)
 gleap messages note --ticket <ID> "Root cause identified in auth service."
 
+# Delete a message
+gleap messages delete <ID>
+
 # Reply to the customer
 gleap messages reply --ticket <ID> "We've deployed a fix. Please try again."
+```
+
+### Collections (Help Center)
+
+```bash
+# List all collections
+gleap collections list
+
+# Get a single collection
+gleap collections get <ID>
+
+# Create a collection
+gleap collections create --title "Getting Started"
+gleap collections create --title "FAQ" --description "Frequently asked questions"
+
+# Update a collection
+gleap collections update <ID> --title "Updated Title"
+
+# Delete a collection
+gleap collections delete <ID>
+```
+
+### Articles (Help Center)
+
+```bash
+# List articles in a collection
+gleap articles list --collection <ID>
+
+# Get a single article
+gleap articles get --collection <ID> <ARTICLE_ID>
+
+# Create an article (defaults to draft, English)
+gleap articles create --collection <ID> --title "Getting Started" --content-file content.json
+gleap articles create --collection <ID> --title "Erste Schritte" --language de --published
+
+# Update an article
+gleap articles update --collection <ID> <ARTICLE_ID> --title "Updated Title"
+gleap articles update --collection <ID> <ARTICLE_ID> --content-file updated.json --published true
+
+# Delete an article
+gleap articles delete --collection <ID> <ARTICLE_ID>
+
+# Move an article to a different collection
+gleap articles move --collection <ID> <ARTICLE_ID> --to <TARGET_COLLECTION_ID>
 ```
 
 ## Verbose Output
@@ -130,10 +180,12 @@ gleap -vvv tickets list     # + full response body always
 | Resource | Operations |
 |----------|-----------|
 | **Auth** | login, logout, status |
-| **Tickets** | list, get, search, create, update, logs (console, network, activity) |
-| **Messages** | list, note (internal), reply (comment) |
+| **Tickets** | list, get, search, create, update, delete, logs (console, network, activity) |
+| **Messages** | list, note (internal), reply (comment), delete |
+| **Collections** | list, get, create, update, delete |
+| **Articles** | list, get, create, update, delete, move |
 
-The Gleap API has many more endpoints (help center, engagements, surveys, statistics, sessions, etc.) that are not yet implemented. Contributions welcome.
+The Gleap API has many more endpoints (engagements, surveys, statistics, sessions, etc.) that are not yet implemented. Contributions welcome.
 
 ### References
 
@@ -175,18 +227,26 @@ src/
 │   ├── auth.rs
 │   ├── tickets.rs
 │   ├── messages.rs
+│   ├── collections.rs
+│   ├── articles.rs
 │   └── shared.rs        # Shared args (pagination)
 ├── client/              # Gleap API HTTP client
 │   ├── mod.rs           # GleapClient (auth, request helpers, verbose logging)
 │   ├── tickets.rs
-│   └── messages.rs
+│   ├── messages.rs
+│   ├── collections.rs
+│   └── articles.rs
 ├── models/              # Request/response types
 │   ├── ticket.rs
-│   └── message.rs
+│   ├── message.rs
+│   ├── collection.rs
+│   └── article.rs
 └── commands/            # Command handlers
     ├── auth.rs
-    ├── tickets/         # list, get, search, create, update, logs
-    └── messages/        # list, note, reply
+    ├── tickets/         # list, get, search, create, update, delete, logs
+    ├── messages/        # list, note, reply, delete
+    ├── collections/     # list, get, create, update, delete
+    └── articles/        # list, get, create, update, delete, move
 ```
 
 ## License

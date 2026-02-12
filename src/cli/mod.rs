@@ -1,11 +1,15 @@
+pub mod articles;
 pub mod auth;
+pub mod collections;
 pub mod messages;
 pub mod shared;
 pub mod tickets;
 
 use clap::{ArgAction, Parser, Subcommand};
 
+pub use articles::ArticlesAction;
 pub use auth::AuthAction;
+pub use collections::CollectionsAction;
 pub use messages::MessagesAction;
 pub use tickets::{LogsAction, TicketsAction};
 
@@ -43,5 +47,17 @@ pub enum Domain {
     Messages {
         #[command(subcommand)]
         action: MessagesAction,
+    },
+
+    /// Manage help center collections
+    Collections {
+        #[command(subcommand)]
+        action: CollectionsAction,
+    },
+
+    /// Manage help center articles
+    Articles {
+        #[command(subcommand)]
+        action: ArticlesAction,
     },
 }

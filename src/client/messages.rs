@@ -53,6 +53,12 @@ impl<'a> MessagesClient<'a> {
         self.create(&request).await
     }
 
+    /// Delete a message by ID.
+    pub async fn delete(&self, message_id: &str) -> Result<serde_json::Value, AppError> {
+        let request = self.client.delete(&format!("/messages/{}", message_id));
+        self.client.send_and_parse(request).await
+    }
+
     /// Convenience: create a comment reply on a ticket.
     pub async fn create_comment(&self, ticket_id: &str, text: &str) -> Result<Message, AppError> {
         let request = CreateMessageRequest {
