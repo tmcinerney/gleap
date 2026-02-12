@@ -6,7 +6,7 @@ mod commands;
 use gleap::client::GleapClient;
 use gleap::error::AppError;
 
-use cli::{AuthAction, Cli, Domain, LogsAction, MessagesAction, TicketsAction};
+use cli::{AuthAction, Cli, CollectionsAction, Domain, LogsAction, MessagesAction, TicketsAction};
 
 #[tokio::main]
 async fn main() {
@@ -104,6 +104,23 @@ async fn run() -> Result<(), AppError> {
             }
             MessagesAction::Reply { ticket, text } => {
                 commands::messages::reply::run(&client, &ticket, &text).await
+            }
+        },
+        Domain::Collections { action } => match action {
+            CollectionsAction::List { pagination } => {
+                commands::collections::list::run(&client, pagination.limit, pagination.skip).await
+            }
+            CollectionsAction::Get { id } => commands::collections::get::run(&client, &id).await,
+            CollectionsAction::Create { title, description } => {
+                commands::collections::create::run(&client, &title, description).await
+            }
+            CollectionsAction::Update {
+                id,
+                title,
+                description,
+            } => commands::collections::update::run(&client, &id, title, description).await,
+            CollectionsAction::Delete { id } => {
+                commands::collections::delete::run(&client, &id).await
             }
         },
     }

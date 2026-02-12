@@ -121,6 +121,26 @@ gleap messages delete <ID>
 gleap messages reply --ticket <ID> "We've deployed a fix. Please try again."
 ```
 
+### Collections (Help Center)
+
+```bash
+# List all collections
+gleap collections list
+
+# Get a single collection
+gleap collections get <ID>
+
+# Create a collection
+gleap collections create --title "Getting Started"
+gleap collections create --title "FAQ" --description "Frequently asked questions"
+
+# Update a collection
+gleap collections update <ID> --title "Updated Title"
+
+# Delete a collection
+gleap collections delete <ID>
+```
+
 ## Verbose Output
 
 Use `-v` flags globally for debugging:
@@ -138,8 +158,9 @@ gleap -vvv tickets list     # + full response body always
 | **Auth** | login, logout, status |
 | **Tickets** | list, get, search, create, update, delete, logs (console, network, activity) |
 | **Messages** | list, note (internal), reply (comment), delete |
+| **Collections** | list, get, create, update, delete |
 
-The Gleap API has many more endpoints (help center, engagements, surveys, statistics, sessions, etc.) that are not yet implemented. Contributions welcome.
+The Gleap API has many more endpoints (engagements, surveys, statistics, sessions, etc.) that are not yet implemented. Contributions welcome.
 
 ### References
 
@@ -181,18 +202,22 @@ src/
 │   ├── auth.rs
 │   ├── tickets.rs
 │   ├── messages.rs
+│   ├── collections.rs
 │   └── shared.rs        # Shared args (pagination)
 ├── client/              # Gleap API HTTP client
 │   ├── mod.rs           # GleapClient (auth, request helpers, verbose logging)
 │   ├── tickets.rs
-│   └── messages.rs
+│   ├── messages.rs
+│   └── collections.rs
 ├── models/              # Request/response types
 │   ├── ticket.rs
-│   └── message.rs
+│   ├── message.rs
+│   └── collection.rs
 └── commands/            # Command handlers
     ├── auth.rs
     ├── tickets/         # list, get, search, create, update, delete, logs
-    └── messages/        # list, note, reply, delete
+    ├── messages/        # list, note, reply, delete
+    └── collections/     # list, get, create, update, delete
 ```
 
 ## License
