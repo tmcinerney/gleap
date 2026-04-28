@@ -82,6 +82,12 @@ pub enum TicketsAction {
         title: Option<String>,
     },
 
+    /// Delete a ticket
+    Delete {
+        /// Ticket ID
+        id: String,
+    },
+
     /// View logs captured with a ticket
     Logs {
         #[command(subcommand)]

@@ -24,6 +24,12 @@ pub enum MessagesAction {
         text: String,
     },
 
+    /// Delete a message
+    Delete {
+        /// Message ID
+        id: String,
+    },
+
     /// Add a comment reply to a ticket
     Reply {
         /// Ticket ID
